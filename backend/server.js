@@ -2,21 +2,25 @@ const express = require('express')
 const http = require('http')
 const app = express()
 const cors = require('cors');
-app.use(cors({
-    origin: "https://sockets-practice-chat.vercel.app",
-    methods: ["GET", "POST"]
-}));
-
 
 const { Server } = require('socket.io')
 const server = http.createServer(app)
 
+const allowedOrigins = [
+    "http://localhost:5173",
+    "https://sockets-practice-chat.vercel.app"
+];
+
 const io = new Server(server, {
     cors: {
-        origin: "https://sockets-practice-chat.vercel.app",
+        origin: allowedOrigins,
         methods: ["GET", "POST"]
     }
-})
+});
+
+app.use(cors({
+    origin: allowedOrigins
+}));
 
 const PORT = 5000
 
